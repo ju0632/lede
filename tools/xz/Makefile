@@ -7,12 +7,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=xz
-PKG_VERSION:=5.2.4
+PKG_VERSION:=5.2.6
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=@SF/lzmautils \
 		http://tukaani.org/xz
-PKG_HASH:=3313fd2a95f43d88e44264e6b015e7d03053e681860b0d5d3f9baca79c57b7bf
+PKG_HASH:=13e3402e301b6018f6a71ef0e497f714c6d11e214ae82dab156b81c2a64acb25
 PKG_CPE_ID:=cpe:/a:tukaani:xz
 
 HOST_BUILD_PARALLEL:=1
@@ -26,6 +26,7 @@ HOST_CONFIGURE_ARGS += \
 	--enable-static=yes \
 	--enable-shared=no \
 	--disable-doc \
+	--disable-nls \
 	--with-pic
 
 define Host/Install
