@@ -2,12 +2,17 @@ REQUIRE_IMAGE_METADATA=1
 
 platform_do_upgrade() {
 	local board=$(board_name)
-	local file_type=$(identify $1)
 
 	case "$board" in
+	asus,tuf-ax4200)
+		CI_UBIPART="UBI_DEV"
+		CI_KERNPART="linux"
+		nand_do_upgrade "$1"
+		;;
 	bananapi,bpi-r3)
-		export_bootdevice
-		export_partdevice rootdev 0
+		local rootdev="$(cmdline_get_var root)"
+		rootdev="${rootdev##*/}"
+		rootdev="${rootdev%p[0-9]*}"
 		case "$rootdev" in
 		mmc*)
 			CI_ROOTDEV="$rootdev"
@@ -58,10 +63,8 @@ platform_check_image() {
 platform_copy_config() {
 	case "$(board_name)" in
 	bananapi,bpi-r3)
-		export_bootdevice
-		export_partdevice rootdev 0
-		case "$rootdev" in
-		mmc*)
+		case "$(cmdline_get_var root)" in
+		/dev/mmc*)
 			emmc_copy_config
 			;;
 		esac
